@@ -1,0 +1,14 @@
+# 目錄
+__pycache__/
+.vscode/
+/.idea
+/venv
+/static/uploads
+/static/temp
+
+# 檔案
+*.pyc
+*/migrations/*/0*.py
+.env
+uwsgi.pid
+# 例外

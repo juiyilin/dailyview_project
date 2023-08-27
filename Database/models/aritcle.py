@@ -1,14 +1,20 @@
 from django.db import models
+import time
 
 
-def get_upload_path(instance, filename):
-    """
-    Profile name 為資料夾名字放入圖片。
-    :param instance: Django models 物件。
-    :param filename: Django models 物件。
-    :return: str ->　檔案路徑。
-    """
-    return f'register/{instance.owner.id_card}/{filename}'
+def small_image_path(instance, filename):
+    now = time.time()
+    return f'article/{instance.uuid4_hex}/s-{now}-{filename}'
+
+
+def main_image_path(instance, filename):
+    now = time.time()
+    return f'article/{instance.uuid4_hex}/m-{now}-{filename}'
+
+
+def article_block_image_path(instance, filename):
+    now = time.time()
+    return f'article/{instance.article.uuid4_hex}/b{instance.block}-{now}-{filename}'
 
 
 class CategoryTag(models.Model):
@@ -19,25 +25,25 @@ class CategoryTag(models.Model):
 
 
 class Article(models.Model):
+    title = models.CharField(max_length=32, verbose_name='標題')
+    summary = models.CharField(max_length=128, verbose_name='摘要')
+    tag = models.ForeignKey(CategoryTag, on_delete=models.CASCADE)
+    small_image = models.ImageField(upload_to=small_image_path)
+    main_image = models.ImageField(upload_to=main_image_path)
+    publish_date = models.DateTimeField(auto_now_add=True)
+    uuid4_hex = models.CharField(max_length=32, verbose_name='資料夾名稱')
+
     class Meta:
         db_table = 'Article'
 
 
-class UserRegister(models.Model):
-    owner = models.ForeignKey(Article, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=get_upload_path)
+class ArticleDetail(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    block = models.PositiveSmallIntegerField(verbose_name='區塊')
+    title = models.CharField(max_length=32, verbose_name='標題')
+    content = models.TextField(verbose_name='內容')
+    image = models.ImageField(upload_to=article_block_image_path, null=True)
 
     class Meta:
-        """
-        改資料庫名字。
-        """
-        db_table = 'UserRegister'
-
-    def to_dict(self):
-        """
-        給計算歐式距離用的。
-        會透過 read_image_and_register 傳送到 BackgroundProgram.py
-        """
-        return {'id': self.id, 'name': self.owner.name, 'feature': self.feature,
-                'project_name': self.owner.project_name, 'identify_number': self.owner.identify_number,
-                'date_of_issue': self.owner.date_of_issue, 'id_card': self.owner.id_card}
+        db_table = 'ArticleDetail'
+        ordering = ['block']

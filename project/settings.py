@@ -13,12 +13,9 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import redis
 
 load_dotenv(dotenv_path=f'{Path(__file__).parent.parent}/.env')
-
-
-if not os.path.isdir('./static/temp'):
-    os.mkdir('./static/temp')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# django.core.management.utils.get_random_secret_key()
-SECRET_KEY = 's2jl^j77epsvoz48^qebjoxvi(@jqxa!v(s%r)tt-&qsylmwwm'
+
+SECRET_KEY = '8g1^%8nk0-g7r5h5d)uh87was=5gjei(+4*-zqjkc$_6kt&rsz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,9 +48,8 @@ INSTALLED_APPS = [
     'Api',
     'rest_framework',
     'drf_yasg',
-    'rest_framework_simplejwt.token_blacklist'
-    # 'channels',
-    # 'websocket',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 
@@ -132,34 +128,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [os.getenv('REDIS_DEFAULT') + os.getenv('REDIS_DEFAULT_DB')],
-#         },
-#     },
-# }
+REDIS_CLIENT = redis.StrictRedis(host=os.getenv('REDIS_DEFAULT'), port=6379, db=2)
 
+ZSET_CLICK_NAME = 'click'
 
 CACHES = {
     'token': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.getenv('REDIS_DEFAULT') + os.getenv('REDIS_TOKEN_DB'),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    'click': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.getenv('REDIS_DEFAULT') + os.getenv('REDIS_FEATURE_DB'),
+        'LOCATION': f'redis://{os.getenv("REDIS_DEFAULT")}:6379/1',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.getenv('REDIS_DEFAULT') + os.getenv('REDIS_DEFAULT_DB'),
+        'LOCATION': f'redis://{os.getenv("REDIS_DEFAULT")}:6379/0',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -194,13 +177,10 @@ MEDIA_PATH = f'{STATIC_URL}uploads/'
 AUTH_USER_MODEL = 'Database.User'
 
 
-# LOGIN_URL = '/hs/login/'
-CACHES_AQI_TIMEOUT = 60 * 60 * 2  # 2 hours
-CACHES_ACCESS_TIMEOUT = 610  # 10 minutes + 10 second
 TIMEOUT = 5 * 60  # 5 minutes
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),
     "BLACKLIST_AFTER_ROTATION": True,
     # 'USER_AUTHENTICATION_RULE': 'Tool.authentication.default_user_authentication_rule'
 }
@@ -215,12 +195,11 @@ REST_FRAMEWORK = {
         'Tool.authentication.MyJWTAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'Admin.permissions.IsSuperUser',  # 沒權限會報 403
         'rest_framework.permissions.IsAuthenticated'
     ],
-    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    # 'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    'DATETIME_FORMAT': '%Y-%m-%d',
     'DEFAULT_PAGINATION_CLASS': 'Tool.pagination.MyPageNumberPagination',
-    # 'DEFAULT_FILTER_BACKENDS': ['Tool.filter.MyFilterBackend'],
 }
 
 SWAGGER_SETTINGS = {

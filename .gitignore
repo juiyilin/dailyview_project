@@ -4,7 +4,7 @@ __pycache__/
 /.idea
 /venv
 /static/uploads
-/static/temp
+/static/drf-yasg
 
 # 檔案
 *.pyc

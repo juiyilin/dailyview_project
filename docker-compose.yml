@@ -1,59 +1,38 @@
 version: "3.8"
-# docker-compose 本身版本
 
 services:
-  # system:
-  #   build: ./system
-  #   container_name: system
-  #   restart: always
-
-  # 每個 service 會啟動一個 container
   db:
     image: postgres:12
-    # restart: always
-    container_name: test_docker_enter_db
+    container_name: docker_db
 
     environment:
       - POSTGRES_DB=${POSTGRESQL_NAME}
       - POSTGRES_USER=${POSTGRESQL_USER}
       - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
-      #- PGDATA=/var/lib/postgresql/data/pgdata
 
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./db_data:/var/lib/postgresql/data
 
     ports:
-      - "5432:5432"
-    # user: 1000:1000
+      - "5433:5432"
 
   back:
     build: .
-    # 找到指定目錄下的Dockerfile建立image
-
-    container_name: test_docker_enter_uwsgi
-    # restart: always
+    container_name: docker_uwsgi
     depends_on:
-      # 等待 depends_on 內的 service 啟動
       - db
-    #./wait-for-it.sh db:5433 -- python manage.py migrate
     command: >
-      sh -c "chmod +x ./wait-for-it.sh  && ./wait-for-it.sh db:5432 -- python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
+      sh -c "chmod +x ./wait-for-it.sh  && cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./static/ &&./wait-for-it.sh db:5433 -- python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
     volumes:
-      #- web_data:/test
       - .:/home/dailyview/
     expose:
-      # expose 是只將 port 暴露給其他container，外部連不進來
       - "8002"
-      # HOST:CONTAINER
     env_file:
       - .env
-    # user: 1000:1000
-
 
   nginx:
-    build: ../nginx
-    # restart: always
-    container_name: test_docker_enter_nginx
+    build: ./nginx
+    container_name: docker_nginx
     ports:
       - "8001:8001"
     volumes:
@@ -63,17 +42,6 @@ services:
 
   cache:
     image: redis
-    container_name: test_docker_enter_redis
+    container_name: docker_redis
     ports:
-      - "6379:6379"
-
-volumes:
-  pgdata:
-    #     # driver: local
-
-    #     db_data:
-    #       driver: local
-    #       # o: bind
-    #       type: 'bind'
-    #       device: /C/mariadb
-
+      - "6380:6379"

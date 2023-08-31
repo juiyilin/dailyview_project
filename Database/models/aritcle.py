@@ -3,17 +3,17 @@ import time
 
 
 def small_image_path(instance, filename):
-    now = time.time()
+    now = int(time.time())
     return f'article/{instance.uuid4_hex}/s-{now}-{filename}'
 
 
 def main_image_path(instance, filename):
-    now = time.time()
+    now = int(time.time())
     return f'article/{instance.uuid4_hex}/m-{now}-{filename}'
 
 
 def article_block_image_path(instance, filename):
-    now = time.time()
+    now = int(time.time())
     return f'article/{instance.article.uuid4_hex}/b{instance.block}-{now}-{filename}'
 
 

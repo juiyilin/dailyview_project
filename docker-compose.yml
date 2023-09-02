@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./static/drf-yasg/ && sleep 5 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
+      sh -c "cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./static/. && sleep 5 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
     volumes:
       - .:/home/dailyview/
     expose:

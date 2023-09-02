@@ -12,7 +12,8 @@ services:
 
     volumes:
       - ./db_data:/var/lib/postgresql/data
-
+    ports:
+      - "5433:5432"
     expose:
       - "5432"
 
@@ -22,7 +23,7 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./static/. && sleep 5 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
+      sh -c "chmod +x ./wait-for-it.sh  && cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./static/ && ./wait-for-it.sh db:5433 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
     volumes:
       - .:/home/dailyview/
     expose:

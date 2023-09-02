@@ -16,10 +16,13 @@
     SUPER_PASSWORD = <自訂 API 登入密碼>
 
 啟動專案 `sudo docker-compose up`  
+停止專案 `sudo docker-compose down`  
+
 待 terminal 出現類似   
 
     WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55a5b17aaeb0 pid: 2035203 (default app)
     mountpoint  already configured. skip.
+    
 表示成功啟動
 
 瀏覽器輸入 [http://0.0.0.0:8001/docs/](http://0.0.0.0:8001/docs/) 可以看到測試 API 的 Swagger 頁面

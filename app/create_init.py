@@ -5,7 +5,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 
 application = get_wsgi_application()
 from django.contrib.auth.hashers import make_password
-from Database.models import User, CategoryTag
+from database.models import User, CategoryTag
 import os
 from dotenv import load_dotenv
 

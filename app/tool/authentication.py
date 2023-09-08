@@ -5,7 +5,7 @@ from django.core.cache import caches
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.backends import AllowAllUsersModelBackend
 from django.contrib.auth.hashers import check_password
-from Database.models import User
+from database.models import User
 
 
 class MyCustomBackend(AllowAllUsersModelBackend):

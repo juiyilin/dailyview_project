@@ -8,4 +8,5 @@ COPY requirements.txt requirements.txt
 RUN apt-get update && apt-get install -y libgl1 && apt-get -y install cron && apt-get -y install nano
 RUN pip install -r requirements.txt
 
-COPY . /home/dailyview
+COPY ./app /home/dailyview
+COPY .env /home/dailyview/

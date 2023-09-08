@@ -1,7 +1,7 @@
 from project.settings import TIMEOUT
 from django.core.cache import caches
 from rest_framework_simplejwt.views import TokenBlacklistView
-from Tool.authentication import MyJWTAuthentication
+from tool.authentication import MyJWTAuthentication
 
 
 class JWTLogout(TokenBlacklistView):

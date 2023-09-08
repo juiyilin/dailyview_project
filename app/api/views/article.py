@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
-from Database.models import Article, ArticleDetail
-from Serializer import ArticleDetailGETSerializer, ArticleListSerializer, ArticlePostSerializer, \
+from database.models import Article, ArticleDetail
+from serializer import ArticleDetailGETSerializer, ArticleListSerializer, ArticlePostSerializer, \
     ArticleDetailBlockSerializer
 from rest_framework.parsers import MultiPartParser
 import uuid

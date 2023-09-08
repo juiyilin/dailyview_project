@@ -1,4 +1,4 @@
-from Database.models import Article, ArticleDetail
+from database.models import Article, ArticleDetail
 from rest_framework.serializers import ModelSerializer
 from project.settings import MEDIA_PATH
 

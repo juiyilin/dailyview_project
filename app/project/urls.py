@@ -2,7 +2,7 @@ from django.urls import path, include, re_path
 import os
 
 urlpatterns = [
-    path('api/', include('Api.urls')),
+    path('api/', include('api.urls')),
 ]
 # if os.environ.get('DJANGO_SETTINGS_MODULE') != 'project.deploy':
 from rest_framework import permissions

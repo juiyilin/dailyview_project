@@ -50,7 +50,7 @@ refresh 輸入登入 API 中拿到的 refresh 的值會存入資料庫的黑名�
 
 - 取得熱門文章 `GET /api/article/`  
 對應 DailyView 網頁的位置  
-![](./static/readme/famous.png)  
+![](./readme/famous.png)  
 可傳參數：  
 頁數 page  
 每頁筆數 size  

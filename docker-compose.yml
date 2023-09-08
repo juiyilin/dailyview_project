@@ -19,9 +19,9 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "chmod +x ./wait-for-it.sh  && cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./static/ && ./wait-for-it.sh db:5432 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
+      sh -c "chmod +x ./wait-for-it.sh  && cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./api/static/ && ./wait-for-it.sh db:5432 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
     volumes:
-      - .:/home/dailyview/
+      - ./app:/home/dailyview/
     expose:
       - "8002"
     env_file:
@@ -33,11 +33,10 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./static:/home/dailyview/static
+      - ./app/static:/home/dailyview/static
     depends_on:
       - back
 
   cache:
     image: redis
     container_name: docker_redis
-

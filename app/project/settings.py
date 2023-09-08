@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import redis
 
-load_dotenv(dotenv_path=f'{Path(__file__).parent.parent}/.env')
+load_dotenv(dotenv_path=f'{Path(__file__).parent.parent.parent}/.env')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'Database',
-    'Api',
+    'database',
+    'api',
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt.token_blacklist',
@@ -167,14 +167,14 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    Path(BASE_DIR, 'static')
+    Path(BASE_DIR, 'api/static')
 ]
 
-MEDIA_ROOT = Path(BASE_DIR, 'static/uploads')
+MEDIA_ROOT = Path(BASE_DIR, 'api/static/uploads')
 
 MEDIA_PATH = f'{STATIC_URL}uploads/'
 
-AUTH_USER_MODEL = 'Database.User'
+AUTH_USER_MODEL = 'database.User'
 
 
 TIMEOUT = 5 * 60  # 5 minutes
@@ -182,24 +182,21 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(hours=1),
     "BLACKLIST_AFTER_ROTATION": True,
-    # 'USER_AUTHENTICATION_RULE': 'Tool.authentication.default_user_authentication_rule'
 }
 
 AUTHENTICATION_BACKENDS = (
-    'Tool.authentication.MyCustomBackend',
+    'tool.authentication.MyCustomBackend',
 )
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'Tool.authentication.MyJWTAuthentication'
+        'tool.authentication.MyJWTAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ],
-    # 'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
     'DATETIME_FORMAT': '%Y-%m-%d',
-    'DEFAULT_PAGINATION_CLASS': 'Tool.pagination.MyPageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'tool.pagination.MyPageNumberPagination',
 }
 
 SWAGGER_SETTINGS = {

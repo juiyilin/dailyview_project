@@ -3,12 +3,12 @@ __pycache__/
 .vscode/
 /.idea
 /venv
-/static/uploads
-/static/drf-yasg
+/app/api/static/uploads
+/app/api/static/drf-yasg
 
 # 檔案
 *.pyc
-*/migrations/0*.py
+/app/database/migrations/0*.py
 .env
 uwsgi.pid
 # 例外

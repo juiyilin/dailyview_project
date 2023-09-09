@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.cache import cache
-from database.models import User
+from api.models import User
 
 
 class IsAlive(APIView):

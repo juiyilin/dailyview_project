@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'database',
     'api',
     'rest_framework',
     'drf_yasg',
@@ -174,7 +173,7 @@ MEDIA_ROOT = Path(BASE_DIR, 'api/static/uploads')
 
 MEDIA_PATH = f'{STATIC_URL}uploads/'
 
-AUTH_USER_MODEL = 'database.User'
+AUTH_USER_MODEL = 'api.User'
 
 
 TIMEOUT = 5 * 60  # 5 minutes
@@ -185,18 +184,18 @@ SIMPLE_JWT = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    'tool.authentication.MyCustomBackend',
+    'api.tool.authentication.MyCustomBackend',
 )
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'tool.authentication.MyJWTAuthentication'
+        'api.tool.authentication.MyJWTAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ],
     'DATETIME_FORMAT': '%Y-%m-%d',
-    'DEFAULT_PAGINATION_CLASS': 'tool.pagination.MyPageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'api.tool.pagination.MyPageNumberPagination',
 }
 
 SWAGGER_SETTINGS = {

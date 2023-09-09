@@ -3,8 +3,8 @@ __pycache__/
 .vscode/
 /.idea
 /venv
-/app/api/static/uploads
-/app/api/static/drf-yasg
+/app/popular/static/uploads
+/app/popular/static/drf-yasg
 
 # 檔案
 *.pyc

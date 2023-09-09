@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
-from api.models import Article, ArticleDetail
-from api.serializer import ArticleDetailGETSerializer, ArticleListSerializer, ArticlePostSerializer, \
+from popular.models import Article, ArticleDetail
+from popular.serializer import ArticleDetailGETSerializer, ArticleListSerializer, ArticlePostSerializer, \
     ArticleDetailBlockSerializer
 from rest_framework.parsers import MultiPartParser
 import uuid
@@ -23,11 +23,11 @@ class ArticleView(ModelViewSet):
         return ArticlePostSerializer
 
     @swagger_auto_schema(manual_parameters=[
-        openapi.Parameter('famous', in_=openapi.IN_QUERY, type=openapi.TYPE_STRING, description='取得熱門文章傳1，不取得熱門文章傳0'),
+        openapi.Parameter('popular', in_=openapi.IN_QUERY, type=openapi.TYPE_STRING, description='取得熱門文章傳1，不取得熱門文章傳0'),
     ])
     def list(self, request, *args, **kwargs):
         click_gte_five = REDIS_CLIENT.zrevrangebyscore(ZSET_CLICK_NAME, 'inf', 5, withscores=True)
-        if not click_gte_five or request.query_params.get('famous') != '1':
+        if not click_gte_five or request.query_params.get('popular') != '1':
             return super().list(request, *args, **kwargs)
         query_dict = Article.objects.in_bulk(int(click[0]) for click in click_gte_five)
         res = []

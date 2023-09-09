@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "chmod +x ./wait-for-it.sh  && cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./api/static/ && ./wait-for-it.sh db:5432 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
+      sh -c "chmod +x ./wait-for-it.sh  && cp -r /usr/local/lib/python3.7/site-packages/drf_yasg/static/drf-yasg/ ./popular/static/ && ./wait-for-it.sh db:5432 && python manage.py makemigrations  && python manage.py migrate  && python create_init.py && uwsgi uwsgi_nginx.ini "
     volumes:
       - ./app:/home/dailyview/
     expose:
@@ -33,7 +33,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./app/api/static:/home/dailyview/static
+      - ./app/popular/static:/home/dailyview/static
     depends_on:
       - back
 

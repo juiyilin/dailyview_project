@@ -1,4 +1,4 @@
-from api.models import Article, ArticleDetail
+from popular.models import Article, ArticleDetail
 from rest_framework.serializers import ModelSerializer
 from project.settings import MEDIA_PATH
 

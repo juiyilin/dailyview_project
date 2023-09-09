@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'api',
+    'popular',
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt.token_blacklist',
@@ -166,14 +166,14 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    Path(BASE_DIR, 'api/static')
+    Path(BASE_DIR, 'popular/static')
 ]
 
-MEDIA_ROOT = Path(BASE_DIR, 'api/static/uploads')
+MEDIA_ROOT = Path(BASE_DIR, 'popular/static/uploads')
 
 MEDIA_PATH = f'{STATIC_URL}uploads/'
 
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL = 'popular.User'
 
 
 TIMEOUT = 5 * 60  # 5 minutes
@@ -184,18 +184,18 @@ SIMPLE_JWT = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    'api.tool.authentication.MyCustomBackend',
+    'popular.tool.authentication.MyCustomBackend',
 )
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'api.tool.authentication.MyJWTAuthentication'
+        'popular.tool.authentication.MyJWTAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ],
     'DATETIME_FORMAT': '%Y-%m-%d',
-    'DEFAULT_PAGINATION_CLASS': 'api.tool.pagination.MyPageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'popular.tool.pagination.MyPageNumberPagination',
 }
 
 SWAGGER_SETTINGS = {

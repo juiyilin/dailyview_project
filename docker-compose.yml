@@ -33,7 +33,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./app/static:/home/dailyview/static
+      - ./app/api/static:/home/dailyview/static
     depends_on:
       - back
 
